@@ -1,20 +1,51 @@
 version: '3'
 
+networks:
+  streaming-service-net:
+    driver: bridge
+
 services:
+  mysql:
+    container_name: streaming-mysql
+    image: mysql:8.0
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: video_stream
+      MYSQL_USER: devuser
+      MYSQL_PASSWORD: devuser
+    volumes:
+      - ./../environment/data/mysql:/var/lib/mysql
+      - ./../environment/mysql/init:/docker-entrypoint-initdb.d/
+    command: [
+      '--character-set-server=utf8mb4',
+      '--collation-server=utf8mb4_unicode_ci',
+      '--skip-character-set-client-handshake'  # Buộc tất cả kết nối sử dụng utf8mb4
+    ]
+    networks:
+      - streaming-service-net
+
   redis:
+    container_name: streaming-redis
     image: redis:latest
     restart: always
     ports:
       - "6379:6379"
     environment:
       REDIS_PASSWORD: secret
+    
   redis-insight:
+    container_name: redis-insight
     image: redis/redisinsight:latest
     restart: always
     ports:
       - "5540:5540"
     volumes:
       - redis-insight:/data
+
+
 
 volumes:
   redis-insight:

@@ -8,5 +8,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface VideoMapper {
     @Mapping(target = "createdAt", expression = "java(java.time.Instant.now())")
+    @Mapping(target = "conversionStatus", expression = "java(dev.victor.streamingservice.model.enums.VideoConversionStatus.PENDING)")
     Video fromCreateVideoInfo(CreateVideoInfo createVideoInfo);
 }

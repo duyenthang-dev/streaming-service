@@ -2,9 +2,10 @@ server:
   port: 8080
 
 spring:
-  http:
-    multipart:
-      enabled: false
+  output:
+    ansi:
+      enabled: always
+
   servlet:
     multipart:
       enabled: false
@@ -13,10 +14,10 @@ spring:
     name: stream-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/video_stream
-    username: postgres
-    password: postgres
-    driver-class-name: org.postgresql.Driver
+    url: jdbc:mysql://localhost:3306/video_stream
+    username: devuser
+    password: devuser
+    driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       connection-test-query: SELECT 1
       maximum-pool-size: 10
@@ -30,7 +31,7 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.MySQLDialect
         format_sql: false
   data:
     redis:
